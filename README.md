@@ -19,9 +19,36 @@ Halo gives each app a **fixed spot on a ring**. Hold ⌥ Option, flick the point
 
 ## Quick start
 
-There is no prebuilt download yet, so you build Halo from source. You only need Apple's Command Line Tools, not Xcode.
+There is no prebuilt download yet, so Halo is built from source on your Mac. You only need Apple's Command Line Tools, not Xcode.
 
-**1. Build and open it**
+**1. Install with your coding agent**
+
+Paste this into Claude Code, Codex, Cursor, or any agent that can run terminal commands on your Mac:
+
+```text
+Install Halo, a ring launcher for macOS, from https://github.com/Rheinmir/halo.
+
+1. Check that this Mac runs macOS 13 or later (`sw_vers -productVersion`) and has Swift
+   from the Command Line Tools (`swift --version`). If Swift is missing, run
+   `xcode-select --install`, ask me to finish the installer dialog, and wait for me.
+2. Clone the repo into ~/halo. If ~/halo already exists, run `git pull` there instead.
+3. In ~/halo, run `./build.sh`. Success ends with "selftest OK" and "OK: …/Halo.app".
+   If macOS asks whether codesign may use the "Halo Local Signing" key, ask me to click
+   "Always Allow". If the build fails, show me the error; don't change the code.
+4. Run `open ~/halo/Halo.app`.
+5. Run `open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"`
+   and ask me to turn on Halo in that list. Tell me Halo's Settings window will show a
+   green "Enabled" within a couple of seconds.
+6. Finish by telling me: hold ⌥ Option on its own to open the ring, move toward an app,
+   release to open it.
+
+Don't use sudo and don't install anything else.
+```
+
+✅ The agent ends with Halo running: a small ring-of-dots icon in the menu bar, and Halo's Settings window open.
+
+<details>
+<summary><b>Install manually instead</b></summary>
 
 ```bash
 xcode-select --install          # skip if you already have Command Line Tools
@@ -35,7 +62,11 @@ open Halo.app
 
 ✅ A small ring-of-dots icon appears in the menu bar. Halo doesn't have Accessibility access yet, so its Settings window opens as well.
 
+</details>
+
 **2. Allow Accessibility access**
+
+If you used the agent prompt, it already opened this pane for you. Just turn Halo on.
 
 Halo needs this to notice when you hold the trigger key and to read and raise app windows.
 

@@ -19,9 +19,36 @@ Halo cho mỗi app **một chỗ cố định trên vòng**. Giữ ⌥ Option, r
 
 ## Bắt đầu nhanh
 
-Chưa có bản tải sẵn, nên bạn build Halo từ source. Chỉ cần Command Line Tools của Apple, không cần Xcode.
+Chưa có bản tải sẵn, nên Halo được build từ source ngay trên máy bạn. Chỉ cần Command Line Tools của Apple, không cần Xcode.
 
-**1. Build và mở app**
+**1. Cài bằng coding agent**
+
+Dán đoạn này vào Claude Code, Codex, Cursor, hoặc agent nào chạy được lệnh terminal trên máy Mac của bạn:
+
+```text
+Cài Halo, launcher dạng vòng cho macOS, từ https://github.com/Rheinmir/halo.
+
+1. Kiểm tra máy chạy macOS 13 trở lên (`sw_vers -productVersion`) và có Swift từ
+   Command Line Tools (`swift --version`). Nếu thiếu Swift, chạy `xcode-select --install`,
+   nhờ tôi hoàn tất hộp thoại cài đặt, rồi chờ tôi.
+2. Clone repo vào ~/halo. Nếu ~/halo đã có, chạy `git pull` trong đó.
+3. Trong ~/halo, chạy `./build.sh`. Thành công thì cuối log có "selftest OK" và
+   "OK: …/Halo.app". Nếu macOS hỏi codesign có được dùng khoá "Halo Local Signing",
+   nhờ tôi bấm "Always Allow". Nếu build lỗi, cho tôi xem lỗi, đừng sửa code.
+4. Chạy `open ~/halo/Halo.app`.
+5. Chạy `open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"`
+   và nhờ tôi bật Halo trong danh sách đó. Báo tôi rằng cửa sổ Cài đặt của Halo sẽ hiện
+   "Enabled" màu xanh sau vài giây.
+6. Kết thúc bằng cách hướng dẫn tôi: giữ ⌥ Option một mình để mở vòng, rê về phía app,
+   thả tay để mở.
+
+Không dùng sudo và không cài thêm thứ gì khác.
+```
+
+✅ Agent làm xong thì Halo đang chạy: có biểu tượng vòng chấm nhỏ trên menu bar, và cửa sổ Cài đặt của Halo đang mở.
+
+<details>
+<summary><b>Hoặc cài tay</b></summary>
 
 ```bash
 xcode-select --install          # bỏ qua nếu đã có Command Line Tools
@@ -35,7 +62,11 @@ open Halo.app
 
 ✅ Một biểu tượng vòng chấm nhỏ hiện trên menu bar. Halo chưa có quyền Accessibility nên cửa sổ Cài đặt cũng tự mở.
 
+</details>
+
 **2. Cấp quyền Accessibility**
+
+Nếu bạn cài bằng prompt cho agent, agent đã mở sẵn trang này. Bạn chỉ cần bật Halo.
 
 Halo cần quyền này để biết khi nào bạn giữ phím kích hoạt, và để đọc, đưa cửa sổ lên trước.
 
