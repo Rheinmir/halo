@@ -43,6 +43,16 @@ We pushed the fix (`5670fe7`), started the old `~/halo` build (`d5db8d9`), and r
 | Running Halo processes | 1, started by the agent after it quit the old one |
 | New binary includes the single-instance check | yes |
 
+## Run 3: a one-line prompt
+
+Later the README became a short TL;DR, and the install facts moved to [`AGENTS.md`](../../AGENTS.md), the file coding agents look for. The default prompt shrank to one line: *"Install Halo from https://github.com/Rheinmir/halo by following its AGENTS.md."*
+
+With `~/halo` on an old commit and the old build running, a fresh agent finished in 1 min 7 s:
+
+- It pulled `d7cf05f` → `301b81b`, the same commit as the remote.
+- It built, quit the old build and opened the new one. Exactly one process was left, started by the agent.
+- Because `AGENTS.md` says the permission persists, it didn't ask the user to enable Accessibility again. It only explained how to, in case Halo didn't respond.
+
 ## Remaining limits
 
 - Both runs used the same agent family and this Mac. Other agents (Codex, Cursor) haven't been tried.
