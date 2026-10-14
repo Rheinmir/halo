@@ -1,192 +1,171 @@
-<p align="center"><img src="docs/icon.png" width="128" alt="Icon Halo"></p>
+<p align="center"><img src="docs/icon.png" width="112" alt="Halo app icon"></p>
 
 <h1 align="center">Halo</h1>
 
-<p align="center">Ứng dụng yêu thích của bạn, trong một cử chỉ.<br>Launcher dạng vòng cho macOS. Lấy cảm hứng từ <a href="https://fowllabs.com/apps/fowyring/">FowyRing</a> của Fowl Labs.</p>
+<p align="center"><b>Hold a key, flick toward an app, let go.</b><br>
+A ring launcher for macOS that puts your favorite apps — and the exact window you want — one gesture away.</p>
 
-<p align="center"><img src="docs/ring-hover.png" width="640" alt="Vòng Halo đang trỏ vào Google Chrome"></p>
+<p align="center"><img src="docs/ring-hover.png" width="680" alt="The Halo ring with Google Chrome highlighted"></p>
 
-## Mục lục
+<p align="center"><a href="#quick-start">Quick start</a> · <a href="#what-you-can-do">What you can do</a> · <a href="#limitations-and-requirements">Limitations</a> · <a href="#troubleshooting">Troubleshooting</a></p>
 
-1. [Cài đặt lần đầu](#1-cài-đặt-lần-đầu)
-2. [Mở app bằng vòng](#2-mở-app-bằng-vòng)
-3. [Chọn đúng cửa sổ](#3-chọn-đúng-cửa-sổ)
-4. [Sắp xếp app trên vòng](#4-sắp-xếp-app-trên-vòng)
-5. [Tuỳ chỉnh](#5-tuỳ-chỉnh)
-6. [Cấu hình bằng file](#6-cấu-hình-bằng-file)
-7. [Dành cho người phát triển](#7-dành-cho-người-phát-triển)
-8. [Giới hạn](#8-giới-hạn)
+> **Note:** Halo's interface is currently in Vietnamese. The screenshots below show the real UI; this README explains each part in English.
 
-## 1. Cài đặt lần đầu
+## Why Halo?
 
-**Bước 1. Build và mở app.** Chỉ cần Command Line Tools, không cần Xcode.
+You probably bounce between the same handful of apps all day: a browser, a chat app, an editor, a terminal. ⌘Tab orders apps by how recently you used them, so the one you want keeps moving and you have to look before you press. The Dock means a trip to the edge of the screen. And when an app has several windows open, ⌘Tab brings the app forward, but not necessarily the window you meant.
+
+Halo gives each app a **fixed spot on a ring**. Hold ⌥ Option, flick the pointer toward the spot, release. Because the spots don't move, your hand learns where things are. If the app has more than one window, Halo lists them next to the ring so you can land on the right one directly.
+
+## Quick start
+
+There is no prebuilt download yet, so you build Halo from source. You only need Apple's Command Line Tools, not Xcode.
+
+**1. Build and open it**
 
 ```bash
+xcode-select --install          # skip if you already have Command Line Tools
 git clone https://github.com/Rheinmir/halo.git
 cd halo
 ./build.sh
 open Halo.app
 ```
 
-- Lần build đầu, `build.sh` tạo chứng chỉ ký "Halo Local Signing" trong keychain.
-- macOS có thể hỏi "codesign muốn dùng khoá". Bấm **Always Allow**.
+`build.sh` compiles the app, runs a self-test, and signs it. The first time, it also creates a local signing certificate called "Halo Local Signing" in your login keychain. If macOS asks whether `codesign` may use that key, choose **Always Allow**.
 
-**Bước 2. Cấp quyền Accessibility.** Halo cần quyền này để đọc phím giữ và danh sách cửa sổ.
+✅ A small ring-of-dots icon appears in the menu bar. Halo doesn't have Accessibility access yet, so its Settings window opens as well.
 
-- Lần đầu chưa có quyền, cửa sổ Cài đặt tự mở.
-- Vào tab **Chung** → mục **Quyền** → bấm **Mở cài đặt…**.
-- Trong System Settings → Privacy & Security → Accessibility, bật công tắc cạnh **Halo**.
-- Đợi khoảng 2 giây. Halo tự nhận quyền, không cần mở lại app.
-- Quyền được giữ qua các lần build sau, vì chữ ký không đổi.
+**2. Allow Accessibility access**
 
-<p align="center"><img src="docs/settings-general.png" width="560" alt="Tab Chung, mục Quyền ở cuối"></p>
+Halo needs this to notice when you hold the trigger key and to read and raise app windows.
 
-**Bước 3. Tìm Halo.**
+- In Settings, open the first tab (**Chung**, "General"). Under the last section (**Quyền**, "Permission"), click **Mở cài đặt…** ("Open settings…").
+- In System Settings → Privacy & Security → Accessibility, turn on **Halo**.
 
-- Bình thường Halo chỉ có biểu tượng vòng chấm trên menu bar, không có icon Dock.
-- Bấm biểu tượng đó → **Cài đặt…** (⌘,) hoặc **Thoát Halo**.
-- Khi cửa sổ Cài đặt mở, Halo hiện trong Dock và ⌘Tab. Đóng cửa sổ thì Halo về lại menu bar, vẫn chạy nền.
-- Mở `Halo.app` lần nữa khi app đang chạy: cửa sổ Cài đặt hiện lại.
+✅ Within about two seconds, the permission row in Halo's Settings shows a green **Đã bật** ("Enabled"). You don't need to restart the app.
 
-## 2. Mở app bằng vòng
+**3. Try it**
 
-1. **Giữ ⌥ Option một mình.** Sau độ trễ (mặc định 0,18 giây), vòng hiện ở giữa màn hình.
+- Hold **⌥ Option** by itself. The ring appears in the middle of your screen.
+- Move the pointer toward an app. Its slice lights up and its name appears in the center.
+- Release ⌥.
 
-   <p align="center"><img src="docs/ring-idle.png" width="560" alt="Vòng khi chưa trỏ vào app"></p>
+✅ That app comes to the front, or launches if it wasn't running.
 
-2. **Rê chuột về phía app.** Ô đó sáng lên, các app khác mờ đi. Tâm vòng hiện tên app và trạng thái.
+The ring starts with the first 8 apps pinned in your Dock. Section 4 below shows how to change them.
 
-   <p align="center"><img src="docs/ring-hover.png" width="560" alt="Vòng đang trỏ vào một app"></p>
+## What you can do
 
-3. **Thả ⌥.** App đó mở ra, hoặc được đưa lên trước nếu đang chạy.
+### Open an app without looking for it
 
-| Muốn | Làm |
+Hold the trigger key, flick toward a slot, release. Apps keep their slots, so after a few days you stop looking at the ring at all.
+
+<p align="center"><img src="docs/ring-idle.png" width="560" alt="The ring before pointing at an app"></p>
+
+- A small dot under an icon means the app is already running.
+- Release in the middle of the ring (or press Esc) to cancel.
+- Prefer the keyboard? While holding the key: **Tab / ⇧Tab** cycles, **arrow keys** pick by direction, **1–9** opens that slot, **Enter** opens the highlighted app.
+- ⌥-click and ⌥ + another key still work as usual. The ring only opens when you hold the key on its own.
+
+### Jump to the exact window
+
+When the app you point at has two or more windows, the center reads "*N* cửa sổ ›" ("*N* windows") and a window list opens beside the ring.
+
+<p align="center"><img src="docs/ring-windows.png" width="680" alt="A window list next to the ring"></p>
+
+- Move the pointer out past the edge of the ring, toward the list. The nearest row is selected.
+- Release the key: that window comes to the front. Minimized windows (marked "thu nhỏ") are restored.
+- From the keyboard: **↓** enters the list, **↑ / ↓** move through it.
+
+### Arrange the ring by dragging
+
+Open Settings from the menu bar icon (**Cài đặt…**, ⌘,) and go to the middle tab (**Ứng dụng**, "Apps").
+
+<p align="center"><img src="docs/settings-apps.png" width="560" alt="The Apps tab: an editable ring on the left, the app list on the right"></p>
+
+- **Drag an icon on the ring** to another slot. The other icons move aside, and the real ring updates as soon as you drop.
+- **Drop an app from Finder** onto a slot on the ring, or between two rows of the list, to insert it right there.
+- **Từ Dock ▾** ("From Dock") lists every app pinned in your Dock. Apps already on the ring are checked.
+- **Thêm app…** ("Add app…") opens a file picker. The **−** button on a row removes that app.
+- The ring holds up to 10 apps. The counter above the list shows how many slots are used (for example "7/10").
+
+### Make it fit your hands
+
+The first tab (**Chung**, "General") has the rest of the options.
+
+<p align="center"><img src="docs/settings-general.png" width="560" alt="The General tab"></p>
+
+| Setting | What it does |
 |---|---|
-| Huỷ | Thả ⌥ khi chuột ở giữa vòng, hoặc bấm Esc |
-| Xoay qua lại giữa các app | Tab / ⇧Tab |
-| Chọn app theo hướng | Phím mũi tên |
-| Mở thẳng app số N | Phím 1–9 (số ghi ở tâm vòng: "phím 3") |
-| Mở app đang chọn | Enter |
+| Mở vòng bằng — *Trigger key* | Hold ⌥ Option, ⌃ Control, ⌘ Command or 🌐 Globe (fn) to open the ring |
+| Độ trễ — *Delay* | How long to hold before the ring appears, from 0 to 0.5 s (default 0.18 s). A short delay can trigger by accident when you use shortcuts |
+| Hiện ở — *Show at* | Center of the screen under the pointer, or right at the pointer |
+| Danh sách cửa sổ — *Window list* | Turn the window list on or off |
+| Tiếng tick — *Tick sound* | A soft tick each time the highlight moves to another app |
 
-- Chấm nhỏ dưới icon: app đang chạy.
-- ⌥-click và ⌥ + phím khác vẫn chạy bình thường, vòng không hiện.
+All changes apply immediately.
 
-## 3. Chọn đúng cửa sổ
+## How it works
 
-Khi app đang trỏ có từ 2 cửa sổ trở lên, tâm vòng ghi **"N cửa sổ ›"** và danh sách cửa sổ bung ra cạnh vòng.
+- **Everything stays on your Mac.** Halo makes no network requests. The only web link is the "Xem FowyRing" button in the About tab, which opens your browser when you click it.
+- **Key detection:** a system event tap watches modifier keys. It only acts when the trigger key is held alone, and it swallows navigation keys (Tab, arrows, digits, Enter, Esc) only while the ring is open.
+- **Windows:** the window list comes from the macOS Accessibility API, which is the same permission used for the key. Halo doesn't need Screen Recording.
+- **Settings** are saved to `~/Library/Application Support/Halo/config.json`. You can edit the file by hand. Missing keys fall back to defaults.
 
-<p align="center"><img src="docs/ring-windows.png" width="640" alt="Danh sách cửa sổ bung cạnh vòng"></p>
+## Limitations and requirements
 
-- Rê chuột ra **ngoài vòng** về phía danh sách. Dòng gần chuột nhất được chọn.
-- Thả ⌥: đúng cửa sổ đó được đưa lên trước.
-- Dùng phím: ↓ để vào danh sách, ↑ ↓ để chọn.
-- Cửa sổ đang thu nhỏ (ghi "thu nhỏ") được mở ra lại.
-- Rê chuột về lại trong vòng: quay về chọn app.
+- **macOS 13 Ventura or later.** Developed on macOS 15 (Apple Silicon). macOS 13 and 14 haven't been tried yet.
+- **Accessibility permission is required.** Without it the ring never appears.
+- **Build from source only.** No signed or notarized release exists yet. The app is signed with a self-signed certificate created on your own machine, so a copy of `Halo.app` won't open on another Mac. Each person builds their own.
+- **Interface language:** Vietnamese only for now.
+- **Up to 10 apps** on the ring.
+- **The window list only shows windows on the current Space** (desktop).
+- **No "launch at login" option yet.** Add Halo to System Settings → General → Login Items if you want it to start automatically.
 
-## 4. Sắp xếp app trên vòng
+## Troubleshooting
 
-Biểu tượng Halo trên menu bar → **Cài đặt…** → tab **Ứng dụng**.
+**Holding ⌥ does nothing.**
+Accessibility is probably off. In Halo's Settings, open **Chung** ("General"). If the permission row doesn't show a green **Đã bật**, click **Mở cài đặt…** and turn Halo on. Also make sure you're holding the trigger key alone, and for at least the delay time.
 
-<p align="center"><img src="docs/settings-apps.png" width="560" alt="Tab Ứng dụng"></p>
+**Accessibility keeps turning off after I rebuild.**
+macOS ties the permission to the app's signature. `build.sh` signs every build with the same "Halo Local Signing" certificate so the permission sticks. If you deleted that certificate, the next build creates a new one and you need to turn Accessibility on once more.
 
-**Trên vòng (bên trái):**
+**The Globe (🌐) key opens the emoji picker.**
+macOS assigns that key to something by default. In System Settings → Keyboard, set "Press 🌐 key to" to "Do Nothing", or pick another trigger key.
 
-- **Đổi chỗ:** nắm một icon, kéo sang ô khác. Icon bay theo chuột, các icon khác tự dạt ra. Thả là xong.
-- **Thêm:** kéo app từ Finder, thả vào một ô trên vòng. App được chèn đúng chỗ đó.
-- **Chọn:** bấm vào icon. Dòng tương ứng bên phải cũng được chọn.
+**I can't find the menu bar icon.**
+On Macs with a notch, icons that don't fit are hidden behind it. Quit a few menu bar apps, or ⌘-drag icons to make room. You can also open `Halo.app` again from Finder to bring up Settings.
 
-**Trong danh sách (bên phải):**
+**Halo isn't in the Dock.**
+That's intentional: Halo lives in the menu bar. It shows up in the Dock and ⌘Tab only while the Settings window is open.
 
-- **Đổi chỗ:** kéo dòng lên xuống (nắm ở ≡), hoặc bấm ↑ ↓ hiện khi rê chuột vào dòng.
-- **Xoá:** bấm −.
-- **Thêm app…:** chọn một hay nhiều app trong Finder.
-- Kéo app từ Finder thả vào giữa hai dòng: app được chèn đúng chỗ đó.
-- **Từ Dock ▾:** liệt kê mọi app đang ghim trên Dock. Bấm app nào để thêm app đó. App đã có trên vòng hiện dấu ✓.
-  - Mục cuối "Thay bằng 10 app đầu Dock": thay cả vòng.
-- Vòng chứa tối đa 10 app. Số bên phải tiêu đề cho biết đã dùng bao nhiêu ô, ví dụ "7/10".
-- "Vị trí 2 giờ": vị trí của app trên vòng, theo kim đồng hồ.
+## Development
 
-Mọi thay đổi có hiệu lực ngay trên vòng thật.
+```bash
+swift build -c release
+.build/release/Halo --selftest                     # ring and window-list geometry
+.build/release/Halo --preview out.png 2            # render the ring with slot 2 highlighted
+.build/release/Halo --preview out.png 1 0 "A" "~B" # …plus a fake window list ("~" = minimized)
+.build/release/Halo --preview-settings out.png apps|general|about [light]
+```
 
-## 5. Tuỳ chỉnh
+The screenshots in `docs/` were made with these commands. They use the apps from your own config file, and a solid background instead of the live translucent glass.
 
-Tab **Chung**:
-
-<p align="center"><img src="docs/settings-general.png" width="560" alt="Tab Chung"></p>
-
-| Mục | Ý nghĩa |
+| File | Responsibility |
 |---|---|
-| Mở vòng bằng | Phím giữ để mở vòng: ⌥ Option, ⌃ Control, ⌘ Command hoặc 🌐 Globe (fn) |
-| Độ trễ | Giữ bao lâu thì vòng hiện, 0–0,5 giây. Ngắn quá dễ bật nhầm khi dùng phím tắt |
-| Hiện ở | Giữa màn hình (có chuột), hoặc ngay tại con trỏ |
-| Danh sách cửa sổ | Bật/tắt danh sách cửa sổ ở mục 3 |
-| Tiếng tick khi đổi app | Tiếng "tink" nhỏ khi rê qua app |
-| Accessibility | Trạng thái quyền. Chưa cấp thì có nút "Mở cài đặt…" |
+| `Sources/Halo/Hotkey.swift` | Global key detection (`CGEventTap`) |
+| `Sources/Halo/Geometry.swift` | Slot and window-list geometry, self-test |
+| `Sources/Halo/Ring.swift` | The ring, the window list, the floating panel |
+| `Sources/Halo/Windows.swift` | Listing and raising windows via Accessibility |
+| `Sources/Halo/Settings.swift` | The Settings window and the drag-to-arrange ring |
+| `Sources/Halo/Apps.swift` | Config file, Dock reading, trigger keys |
+| `Sources/Halo/main.swift` | App wiring and the command-line tools above |
+| `build.sh` | Builds `Halo.app`, generates the icon, signs it |
 
-- Chọn 🌐 Globe: nên tắt "Press 🌐 key to" trong System Settings → Keyboard. Nếu không, phím này còn mở bảng emoji.
+To remove the signing certificate later, open Keychain Access and delete "Halo Local Signing".
 
-Tab **Giới thiệu**: phiên bản, nút mở file cấu hình.
+## Credits and license
 
-<p align="center"><img src="docs/settings-about.png" width="560" alt="Tab Giới thiệu"></p>
+Halo's interaction is inspired by [FowyRing](https://fowllabs.com/apps/fowyring/) from Fowl Labs. Halo is an independent project written from scratch.
 
-Cửa sổ Cài đặt theo giao diện sáng hoặc tối của macOS. Vòng luôn dùng kính tối.
-
-<p align="center">
-  <img src="docs/settings-apps-light.png" width="32%" alt="Tab Ứng dụng, giao diện sáng">
-  <img src="docs/settings-general-light.png" width="32%" alt="Tab Chung, giao diện sáng">
-  <img src="docs/settings-about-light.png" width="32%" alt="Tab Giới thiệu, giao diện sáng">
-</p>
-
-## 6. Cấu hình bằng file
-
-Mọi thứ lưu trong `~/Library/Application Support/Halo/config.json`. Thường không cần sửa tay, vì cửa sổ Cài đặt làm được hết.
-
-| Khoá | Giá trị |
-|---|---|
-| `apps` | Tối đa 10 đường dẫn `.app`. App đầu ở đỉnh vòng, theo chiều kim đồng hồ. Lần đầu lấy 8 app ghim đầu Dock |
-| `position` | `"center"` hoặc `"cursor"` |
-| `trigger` | `"option"`, `"control"`, `"command"` hoặc `"fn"` |
-| `delay` | Số giây, từ 0 đến 0,5 |
-| `windows` | `true` / `false` |
-| `tick` | `true` / `false` |
-
-File thiếu khoá nào thì khoá đó dùng giá trị mặc định. File cũ vẫn đọc được.
-
-## 7. Dành cho người phát triển
-
-**Yêu cầu:** macOS 13 trở lên, Swift 5.10+ (Command Line Tools). Không cần Xcode.
-
-**Hình học vòng:**
-
-- Đĩa 292px, icon trên vòng bán kính 104px, ô 60px, icon 44px.
-- Vùng huỷ ở tâm bán kính 48px.
-- Ô 0 ở đỉnh, xếp theo chiều kim đồng hồ. Chọn ô bằng `round(atan2(dx, -dy) / (2π/n))`.
-
-**Mã nguồn** (`Sources/Halo/`):
-
-| File | Việc |
-|---|---|
-| `Geometry.swift` | Hình học vòng và danh sách cửa sổ, kèm selftest |
-| `Hotkey.swift` | Bắt phím toàn hệ thống bằng `CGEventTap` |
-| `Ring.swift` | Giao diện vòng, danh sách cửa sổ, panel nổi |
-| `Windows.swift` | Đọc và đưa cửa sổ lên qua Accessibility API |
-| `Settings.swift` | Cửa sổ Cài đặt, vòng chỉnh trực tiếp |
-| `Apps.swift` | Cấu hình, đọc Dock, phím kích hoạt |
-| `Icon.swift` | Icon app và biểu tượng menu bar |
-| `main.swift` | Nối các phần, công cụ dòng lệnh |
-
-**Kiểm và xuất ảnh:**
-
-- `.build/release/Halo --selftest`: kiểm hình học vòng và danh sách cửa sổ.
-- `--preview out.png [ô]`: ảnh vòng.
-- `--preview out.png 1 0 "Cửa sổ A" "~Cửa sổ B"`: ảnh vòng kèm danh sách cửa sổ giả. Dấu `~` = cửa sổ thu nhỏ.
-- `--preview-settings out.png apps|general|about [light]`: ảnh cửa sổ Cài đặt.
-- Ảnh trong README tạo bằng các lệnh trên, dùng danh sách app thật trong file cấu hình.
-
-## 8. Giới hạn
-
-- Ký bằng chứng chỉ tự ký "Halo Local Signing", chỉ chạy trên máy đã build. Muốn phát hành cho máy khác cần tài khoản Apple Developer để ký và notarize.
-  - Gỡ chứng chỉ: Keychain Access → xoá "Halo Local Signing".
-- Danh sách cửa sổ chỉ thấy cửa sổ ở Space hiện tại.
-- Chưa có tuỳ chọn chạy khi đăng nhập.
-- Ảnh trong README là ảnh xuất từ app với nền kính đặc. Vòng thật dùng kính mờ, thấy được màn hình phía sau.
+No license has been chosen yet. Until one is added, the default copyright applies.
