@@ -20,7 +20,7 @@ Notes on problems we hit and features we built, one topic per post. Each post sa
 - [An app you couldn't see](fix-no-icon-no-dock.md) ([#11](https://github.com/Rheinmir/halo/issues/11)): no icon, and no Dock tile while Settings was open
 - [Adding a setting would have wiped the user's ring](fix-config-migration-wipe.md) ([#12](https://github.com/Rheinmir/halo/issues/12)): synthesized `Decodable` ignores defaults
 - [The self-test that could never fail](fix-selftest-assert-stripped.md) ([#2](https://github.com/Rheinmir/halo/issues/2)): `assert` disappears in release builds
-- [What a real-mouse test found in the window list](fix-window-list-live-test.md): the path to the list crossed another app, raise order, unreadable header
+- [What a real-mouse test found in the window list](fix-window-list-live-test.md) ([#26](https://github.com/Rheinmir/halo/issues/26)): the path to the list crossed another app, raise order, unreadable header
 - [Space did nothing](fix-app-activation-macos14.md) ([#13](https://github.com/Rheinmir/halo/issues/13)): background apps can't activate others on macOS 14+, so Halo uses Accessibility instead
 
 ## Still unverified
