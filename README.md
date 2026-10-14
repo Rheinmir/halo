@@ -105,7 +105,7 @@ When the app you point at has two or more windows, the center reads "*N* windows
 
 <p align="center"><img src="docs/ring-windows.png" width="680" alt="A window list next to the ring"></p>
 
-- Move the pointer out past the edge of the ring, toward the list. The nearest row is selected.
+- Keep moving outward in the same direction, past the edge of the ring. The list sits on that side, so you land in it without crossing other apps. The nearest row is selected.
 - Release the key: that window comes to the front. Minimized windows (marked "minimized") are restored.
 - From the keyboard: **↓** enters the list, **↑ / ↓** move through it.
 
@@ -203,4 +203,4 @@ To remove the signing certificate later, open Keychain Access and delete "Halo L
 
 ## License
 
-Released under the [MIT License](LICENSE).
+Released under the [Apache License 2.0](LICENSE). See [NOTICE](NOTICE).

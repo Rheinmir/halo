@@ -106,7 +106,7 @@ Khi app đang trỏ có từ 2 cửa sổ trở lên, tâm vòng ghi "*N* cửa 
 
 <p align="center"><img src="docs/vi/ring-windows.png" width="680" alt="Danh sách cửa sổ cạnh vòng"></p>
 
-- Rê chuột ra ngoài mép vòng, về phía danh sách. Dòng gần chuột nhất được chọn.
+- Rê tiếp ra xa theo đúng hướng đó, qua mép vòng. Danh sách nằm sẵn ở phía đó nên bạn vào thẳng mà không đi qua app khác. Dòng gần chuột nhất được chọn.
 - Thả phím: đúng cửa sổ đó lên trước. Cửa sổ thu nhỏ (ghi "thu nhỏ") được mở ra lại.
 - Dùng phím: **↓** để vào danh sách, **↑ / ↓** để chọn.
 
@@ -192,4 +192,4 @@ Muốn gỡ chứng chỉ ký: mở Keychain Access và xoá "Halo Local Signing
 
 ## Giấy phép
 
-Phát hành theo [giấy phép MIT](LICENSE).
+Phát hành theo [giấy phép Apache 2.0](LICENSE). Xem [NOTICE](NOTICE).

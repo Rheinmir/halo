@@ -143,33 +143,34 @@ struct WindowList: View {
 
     var body: some View {
         let n = model.apps.count, rows = model.windows.count
-        let first = Geometry.rowCenter(0, rows: rows, slot: slot, count: n)
-        let mid = Geometry.rowCenter(0, rows: rows, slot: slot, count: n).y + Geometry.rowHeight * Double(rows - 1) / 2
-        ZStack(alignment: .top) {
+        let c = Geometry.listCenter(slot: slot, count: n, rows: rows)
+        // Tiêu đề nằm TRONG khối kính: vòng thật trong suốt, chữ để trơn bên ngoài sẽ đè lên màn hình phía sau và không đọc được.
+        VStack(spacing: 0) {
+            HStack(spacing: 6) {
+                if model.icons.indices.contains(slot) {
+                    Image(nsImage: model.icons[slot]).resizable().frame(width: 16, height: 16)
+                }
+                Text(model.apps[slot].name).font(.system(size: 11.5, weight: .semibold)).lineLimit(1)
+                Spacer(minLength: 4)
+                Text(tr("\(rows) windows", "\(rows) cửa sổ")).font(.system(size: 11)).foregroundStyle(.secondary)
+            }
+            .padding(.horizontal, 9)
+            .frame(height: Geometry.headerHeight)
+            Divider().opacity(0.5)
             VStack(spacing: 0) {
                 ForEach(Array(model.windows.enumerated()), id: \.offset) { k, w in
                     WindowRow(window: w, selected: model.hoveredWindow == k)
                 }
             }
             .padding(6)
-            .background(Glass(solid: model.solidBackground, shape: RoundedRectangle(cornerRadius: 14, style: .continuous)))
-            .compositingGroup()
-            .shadow(color: .black.opacity(0.32), radius: 20, y: 10)
-
-            // Tiêu đề: icon + tên app, nằm ngay trên khối danh sách
-            HStack(spacing: 6) {
-                if model.icons.indices.contains(slot) {
-                    Image(nsImage: model.icons[slot]).resizable().frame(width: 16, height: 16)
-                }
-                Text(model.apps[slot].name).font(.system(size: 11.5, weight: .semibold))
-                Text(tr("\(rows) windows", "\(rows) cửa sổ")).font(.system(size: 11)).foregroundStyle(.secondary)
-            }
-            .padding(.horizontal, 6)
-            .offset(y: -26)
         }
+        .background(Glass(solid: model.solidBackground, shape: RoundedRectangle(cornerRadius: 14, style: .continuous)))
+        .compositingGroup()
+        .shadow(color: .black.opacity(0.32), radius: 20, y: 10)
+        .offset(y: -Geometry.headerHeight / 2)   // giữ khối các dòng đúng tại listCenter (Geometry), tiêu đề nằm phía trên
         .frame(width: Geometry.listWidth)
         .environment(\.colorScheme, .dark)
-        .offset(x: first.x, y: mid)
+        .offset(x: c.x, y: c.y)
         .animation(.easeOut(duration: 0.08), value: model.hoveredWindow)
     }
 }

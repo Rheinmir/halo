@@ -25,11 +25,20 @@ enum Windows {
         .prefix(Geometry.maxRows).map { $0 }
     }
 
+    /// Kích hoạt app TRƯỚC rồi mới đưa cửa sổ lên: làm ngược lại thì lúc app được kích hoạt,
+    /// macOS đưa cửa sổ chính cũ lên đè (tìm ra khi test bằng cửa sổ thật). Kích hoạt chạy bất đồng bộ,
+    /// nên đưa cửa sổ lên thêm một lần sau 0,15 giây.
     static func raise(_ w: AppWindow, appPath: String) {
+        guard let app = NSWorkspace.shared.runningApplications.first(where: { $0.bundleURL?.path == appPath }) else { return }
         if w.minimized { AXUIElementSetAttributeValue(w.element, kAXMinimizedAttribute as CFString, kCFBooleanFalse) }
-        AXUIElementSetAttributeValue(w.element, kAXMainAttribute as CFString, kCFBooleanTrue)
-        AXUIElementPerformAction(w.element, kAXRaiseAction as CFString)
-        if let app = NSWorkspace.shared.runningApplications.first(where: { $0.bundleURL?.path == appPath }) { bringToFront(app) }
+        bringToFront(app)
+        let focus = {
+            AXUIElementSetAttributeValue(w.element, kAXMainAttribute as CFString, kCFBooleanTrue)
+            AXUIElementPerformAction(w.element, kAXRaiseAction as CFString)
+            AXUIElementSetAttributeValue(AXUIElementCreateApplication(app.processIdentifier), kAXFocusedWindowAttribute as CFString, w.element)
+        }
+        focus()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: focus)
     }
 
     /// Đưa app lên trước. Từ macOS 14, `NSRunningApplication.activate()` gọi từ app chạy nền (như Halo)
