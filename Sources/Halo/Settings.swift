@@ -506,13 +506,9 @@ struct AboutTab: View {
             AppIcon().frame(width: 1024, height: 1024).scaleEffect(96.0 / 1024).frame(width: 96, height: 96)
             Text("Halo").font(.system(size: 20, weight: .semibold))
             Text(tr("Version 0.3.0", "Phiên bản 0.3.0")).font(.system(size: 12)).foregroundStyle(.secondary)
-            Text(tr("Your favorite apps, one gesture away.\nInspired by FowyRing from Fowl Labs.",
-                    "Ứng dụng yêu thích của bạn, trong một cử chỉ.\nLấy cảm hứng từ FowyRing của Fowl Labs."))
+            Text(tr("Your favorite apps, one gesture away.", "Ứng dụng yêu thích của bạn, trong một cử chỉ."))
                 .font(.system(size: 12)).multilineTextAlignment(.center).foregroundStyle(.secondary).padding(.top, 4)
-            HStack(spacing: 10) {
-                Button(tr("Show Config File", "Mở file cấu hình")) { NSWorkspace.shared.activateFileViewerSelecting([Config.url]) }
-                Button(tr("View FowyRing", "Xem FowyRing")) { NSWorkspace.shared.open(URL(string: "https://fowllabs.com/apps/fowyring/")!) }
-            }
+            Button(tr("Show Config File", "Mở file cấu hình")) { NSWorkspace.shared.activateFileViewerSelecting([Config.url]) }
             .padding(.top, 8)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

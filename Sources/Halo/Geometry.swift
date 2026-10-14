@@ -59,7 +59,7 @@ enum Geometry {
         precondition(slotIndex(dx: -5, dy: -100, count: 4) == 0, "lệch trái chút vẫn ô 0 (không bị % thành ô cuối sai)")
         precondition(slotIndex(dx: 60, dy: 60, count: 1) == 0)
         let p = slotOffset(1, count: 5)  // ô 1/5 trên bán kính 104
-        precondition(abs(p.x - 98.91) < 0.01 && abs(p.y + 32.14) < 0.01, "toạ độ ô khớp bản gốc")
+        precondition(abs(p.x - 98.91) < 0.01 && abs(p.y + 32.14) < 0.01, "ô 1/5 trên bán kính 104")
         // danh sách cửa sổ: ô 1/4 (bên phải), 3 hàng
         precondition(listSide(1, count: 4) == 1 && listSide(3, count: 4) == -1 && listSide(0, count: 4) == 1, "phía danh sách")
         precondition(rowIndex(dx: 100, dy: 0, rows: 3, slot: 1, count: 4) == nil, "trong vòng -> chưa chọn cửa sổ")

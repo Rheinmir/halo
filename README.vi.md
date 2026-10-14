@@ -141,7 +141,7 @@ Mọi thay đổi có hiệu lực ngay.
 
 ## Cách hoạt động
 
-- **Mọi thứ ở trên máy bạn.** Halo không gửi request mạng nào. Link web duy nhất là nút "Xem FowyRing" ở tab Giới thiệu, chỉ mở trình duyệt khi bạn bấm.
+- **Mọi thứ ở trên máy bạn.** Halo không gửi request mạng nào và không chứa link web nào.
 - **Bắt phím:** một event tap của hệ thống theo dõi phím bổ trợ. Nó chỉ phản ứng khi phím kích hoạt được giữ một mình, và chỉ chặn các phím điều hướng (Tab, mũi tên, số, Enter, Esc, Space) khi vòng đang mở.
 - **Cửa sổ:** danh sách lấy từ Accessibility API của macOS, cùng quyền dùng cho phím. Halo không cần quyền ghi màn hình.
 - **Cài đặt** lưu ở `~/Library/Application Support/Halo/config.json`. Sửa tay cũng được. Khoá nào thiếu thì dùng giá trị mặc định.
@@ -190,8 +190,6 @@ Code và các quyết định thiết kế được giải thích trong [devlog]
 
 Muốn gỡ chứng chỉ ký: mở Keychain Access và xoá "Halo Local Signing".
 
-## Ghi công và giấy phép
-
-Cách tương tác của Halo lấy cảm hứng từ [FowyRing](https://fowllabs.com/apps/fowyring/) của Fowl Labs. Halo là dự án độc lập, code viết mới hoàn toàn.
+## Giấy phép
 
 Phát hành theo [giấy phép MIT](LICENSE).

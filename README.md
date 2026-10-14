@@ -140,7 +140,7 @@ All changes apply immediately.
 
 ## How it works
 
-- **Everything stays on your Mac.** Halo makes no network requests. The only web link is the "View FowyRing" button in the About tab, which opens your browser when you click it.
+- **Everything stays on your Mac.** Halo makes no network requests and contains no web links.
 - **Key detection:** a system event tap watches modifier keys. It only acts when the trigger key is held alone, and it swallows navigation keys (Tab, arrows, digits, Enter, Esc) only while the ring is open.
 - **Windows:** the window list comes from the macOS Accessibility API, which is the same permission used for the key. Halo doesn't need Screen Recording.
 - **Settings** are saved to `~/Library/Application Support/Halo/config.json`. You can edit the file by hand. Missing keys fall back to defaults.
@@ -201,8 +201,6 @@ The [devlog](docs/devlog/README.md) explains the problems we hit and the design 
 
 To remove the signing certificate later, open Keychain Access and delete "Halo Local Signing".
 
-## Credits and license
-
-Halo's interaction is inspired by [FowyRing](https://fowllabs.com/apps/fowyring/) from Fowl Labs. Halo is an independent project written from scratch.
+## License
 
 Released under the [MIT License](LICENSE).

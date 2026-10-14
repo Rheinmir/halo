@@ -17,7 +17,7 @@ The problem was elements that **looked like controls but weren't**:
 
 ## What the feature had to do
 
-- Let users choose the trigger key, including 🌐 Globe like the original app.
+- Let users choose the trigger key, including 🌐 Globe.
 - Let users tune the delay. Too short, and the ring triggers during normal shortcuts.
 - Reflect the choice everywhere it's shown.
 

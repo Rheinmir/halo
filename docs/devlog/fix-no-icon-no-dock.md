@@ -12,7 +12,7 @@ Two complaints in a row:
 ## Why it happened
 
 1. The bundle had no icon at all. The menu bar used a generic system symbol (◎).
-2. Halo is built as menu-bar-only (`LSUIElement`), like the app that inspired it. That's right for the ring, but it left the Settings window without a Dock tile or a ⌘Tab entry.
+2. Halo is built as menu-bar-only (`LSUIElement`). That's right for the ring, but it left the Settings window without a Dock tile or a ⌘Tab entry.
 
 ## Fix
 

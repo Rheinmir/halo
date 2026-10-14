@@ -4,9 +4,9 @@
 
 ## What the user needed
 
-The starting point was a question: could we build our own version of FowyRing — a macOS launcher where you hold a key, flick toward an app on a ring, and release — and could we do it with [xtool](https://github.com/xtool-org/xtool)?
+The goal: a macOS launcher where you hold a key, flick toward an app on a ring, and release. The first question was whether [xtool](https://github.com/xtool-org/xtool) was the right way to build it.
 
-The goal was a working app on this Mac: hold a key, see a ring of favorite apps, open one by pointing at it.
+The target was a working app on this Mac: hold a key, see a ring of favorite apps, open one by pointing at it.
 
 ## What the feature had to do
 
