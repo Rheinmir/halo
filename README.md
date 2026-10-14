@@ -162,6 +162,8 @@ The screenshots in `docs/` were made with these commands. They use the apps from
 | `Sources/Halo/main.swift` | App wiring and the command-line tools above |
 | `build.sh` | Builds `Halo.app`, generates the icon, signs it |
 
+The [devlog](docs/devlog/README.md) explains the problems we hit and the design decisions behind each feature.
+
 To remove the signing certificate later, open Keychain Access and delete "Halo Local Signing".
 
 ## Credits and license
