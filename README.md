@@ -64,6 +64,7 @@ Hold the trigger key, flick toward a slot, release. Apps keep their slots, so af
 
 - A small dot under an icon means the app is already running.
 - Release in the middle of the ring (or press Esc) to cancel.
+- **Space** jumps straight back to the app you were using before the current one, like a single ⌘Tab. The center of the ring shows which app that is ("Space ↩ *App*").
 - Prefer the keyboard? While holding the key: **Tab / ⇧Tab** cycles, **arrow keys** pick by direction, **1–9** opens that slot, **Enter** opens the highlighted app.
 - ⌥-click and ⌥ + another key still work as usual. The ring only opens when you hold the key on its own.
 

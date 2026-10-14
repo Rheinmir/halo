@@ -29,7 +29,19 @@ enum Windows {
         if w.minimized { AXUIElementSetAttributeValue(w.element, kAXMinimizedAttribute as CFString, kCFBooleanFalse) }
         AXUIElementSetAttributeValue(w.element, kAXMainAttribute as CFString, kCFBooleanTrue)
         AXUIElementPerformAction(w.element, kAXRaiseAction as CFString)
-        NSWorkspace.shared.runningApplications.first { $0.bundleURL?.path == appPath }?.activate()
+        if let app = NSWorkspace.shared.runningApplications.first(where: { $0.bundleURL?.path == appPath }) { bringToFront(app) }
+    }
+
+    /// Đưa app lên trước. Từ macOS 14, `NSRunningApplication.activate()` gọi từ app chạy nền (như Halo)
+    /// thường bị bỏ qua ("cooperative activation"). Đặt AXFrontmost qua Accessibility thì không bị chặn;
+    /// không được thì mở lại qua NSWorkspace.
+    static func bringToFront(_ app: NSRunningApplication) {
+        let ax = AXUIElementCreateApplication(app.processIdentifier)
+        if AXUIElementSetAttributeValue(ax, kAXFrontmostAttribute as CFString, kCFBooleanTrue) == .success { return }
+        guard let url = app.bundleURL else { app.activate(); return }
+        let cfg = NSWorkspace.OpenConfiguration()
+        cfg.activates = true
+        NSWorkspace.shared.openApplication(at: url, configuration: cfg)
     }
 
     private static func attr<T>(_ e: AXUIElement, _ name: String) -> T? {

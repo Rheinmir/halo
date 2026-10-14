@@ -13,6 +13,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var center = NSPoint.zero   // tâm vòng trên màn hình (Cocoa, y lên)
     private var open = false
     private var retry: Timer?
+    /// Hai app được kích hoạt gần nhất (không tính Halo): Space trên vòng quay về `previousApp`.
+    private var currentApp: NSRunningApplication? = NSWorkspace.shared.frontmostApplication
+    private var previousApp: NSRunningApplication?
 
     /// Bấm icon Halo trên Dock (khi đang hiện) -> mở lại Cài đặt.
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows: Bool) -> Bool {
@@ -25,6 +28,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         status.button?.image = menuBarIcon()
         status.button?.toolTip = "Halo"
         store.onChange = { [unowned self] c in config = c; apply() }
+        NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didActivateApplicationNotification,
+                                                          object: nil, queue: .main) { [unowned self] n in
+            guard let app = n.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
+                  app.processIdentifier != ProcessInfo.processInfo.processIdentifier,
+                  app.processIdentifier != currentApp?.processIdentifier else { return }
+            previousApp = currentApp
+            currentApp = app
+        }
         apply()
         wire()
         startTap()
@@ -110,6 +121,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         model.hovered = nil
         model.windows = []
         model.hoveredWindow = nil
+        model.previousName = previousApp.flatMap { $0.isTerminated ? nil : $0.localizedName }
         open = true
         panel.show(centeredAt: center)
         track()
@@ -146,6 +158,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let digits: [UInt16: Int] = [18: 0, 19: 1, 20: 2, 21: 3, 23: 4, 22: 5, 26: 6, 28: 7, 25: 8]
         switch code {
         case 53: hide()                                         // Esc
+        case 49:                                                // Space: đóng vòng, về ngay app dùng trước đó
+            hide()
+            if let prev = previousApp, !prev.isTerminated { Windows.bringToFront(prev) }
         case 36, 76: commit()                                   // Enter
         case 48: setHovered((((model.hovered ?? (shift ? 0 : -1)) + (shift ? -1 : 1)) % n + n) % n)   // Tab / ⇧Tab
         case 126 where model.showsWindowList && model.hoveredWindow != nil:                      // ↑ trong danh sách cửa sổ
@@ -167,6 +182,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         hide()
         guard let app else { return }
         if let win { return Windows.raise(win, appPath: app.path) }
+        if let running = NSWorkspace.shared.runningApplications.first(where: { $0.bundleURL?.path == app.path }) {
+            return Windows.bringToFront(running)
+        }
         let cfg = NSWorkspace.OpenConfiguration()
         cfg.activates = true
         NSWorkspace.shared.openApplication(at: URL(fileURLWithPath: app.path), configuration: cfg)
@@ -226,6 +244,7 @@ if let a = arg("--preview"), let out = a.first {
             model.hoveredWindow = Int(a[2])
             model.windows = a[3...].map { AppWindow(title: $0.hasPrefix("~") ? String($0.dropFirst()) : $0, element: AXUIElementCreateSystemWide(), minimized: $0.hasPrefix("~")) }
         }
+        model.previousName = "Vivaldi"
         model.visible = true
         let bg = ZStack {
             LinearGradient(colors: [Color(red: 0.16, green: 0.20, blue: 0.32), Color(red: 0.08, green: 0.09, blue: 0.14)],

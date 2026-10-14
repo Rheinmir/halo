@@ -19,12 +19,14 @@ Notes on problems we hit and features we built, one topic per post. Each post sa
 - [An app you couldn't see](fix-no-icon-no-dock.md): no icon, and no Dock tile while Settings was open
 - [Adding a setting would have wiped the user's ring](fix-config-migration-wipe.md): synthesized `Decodable` ignores defaults
 - [The self-test that could never fail](fix-selftest-assert-stripped.md): `assert` disappears in release builds
+- [Space did nothing](fix-app-activation-macos14.md): background apps can't activate others on macOS 14+, so Halo uses Accessibility instead
 
 ## Still unverified
 
-These recur across posts, and were all blocked on the Accessibility permission or on screen access during development:
+Verified later with synthesized key events: the ring appears on hold, Space returns to the previous app, ⌥+1 opens slot 1, and the permission survives rebuilds.
 
-- The hold-and-release flow with real key presses
+Still open:
+
 - The window list against real windows
+- Picking an app by mouse direction, driven by a script
 - Dropping apps from Finder onto the ring
-- Whether the permission survives a rebuild after it's granted

@@ -53,5 +53,5 @@ Previews now render through an offscreen `NSHostingView`, and use a solid backgr
 
 ## Gaps
 
-- The full hold-and-release flow has not been exercised with real key presses yet. It needs the Accessibility permission, which wasn't granted during development. See [the permission devlog](fix-accessibility-permission-lost.md).
+- The hold-and-release flow was later tested with synthesized key events: the ring appears while ⌥ is held, closes on release in the center, and ⌥+1 opens slot 1. Picking by mouse direction hasn't been driven by a script yet. See [the activation devlog](fix-app-activation-macos14.md).
 - macOS 13 and 14 haven't been tried.

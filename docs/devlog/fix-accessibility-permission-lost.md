@@ -37,6 +37,6 @@ identifier "local.halo.ring" and certificate leaf = H"0684bb5f…"
 
 ## Remaining limits
 
-- **Not yet confirmed end to end:** that the permission survives a rebuild *after* the user grants it. The user had not switched it on at the time of writing.
+- Confirmed later: the user granted the permission at 14:28, and it was still granted (`auth_value = 2`) after several rebuilds.
 - Deleting the certificate makes the next build create a new one, and the permission has to be granted again.
 - A copy of the app still won't run on another Mac. That needs Developer ID signing and notarization.

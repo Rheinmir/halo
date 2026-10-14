@@ -10,7 +10,8 @@ final class RingModel: ObservableObject {
     @Published var hoveredWindow: Int?
     @Published var visible = false                // điều khiển hiệu ứng hiện
     var ghost: Int?
-    @Published var triggerSymbol = "⌥"                               // Settings: ô đang được kéo tới -> vẽ mờ làm chỗ trống
+    @Published var triggerSymbol = "⌥"
+    @Published var previousName: String?          // app dùng trước đó: gợi ý "Space ↩ …" ở tâm vòng                               // Settings: ô đang được kéo tới -> vẽ mờ làm chỗ trống
     var solidBackground = false                   // ảnh preview: NSVisualEffectView không vẽ được offscreen
 
     var showsWindowList: Bool { hovered != nil && windows.count >= 2 }
@@ -115,6 +116,10 @@ struct CenterLabel: View {
             } else {
                 Text(model.triggerSymbol).font(.system(size: 17, weight: .medium)).foregroundStyle(.secondary)
                 Text("Rê tới một app").font(.system(size: 10.5, weight: .medium)).foregroundStyle(.tertiary)
+                if let prev = model.previousName {
+                    Text("Space ↩ \(prev)").font(.system(size: 10, weight: .medium)).foregroundStyle(.tertiary)
+                        .lineLimit(1).truncationMode(.tail).padding(.top, 2)
+                }
             }
         }
         .multilineTextAlignment(.center)

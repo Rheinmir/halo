@@ -20,7 +20,7 @@ final class Hotkey {
     private var optionDown = false
     private var pending: DispatchWorkItem?
 
-    static let navKeys: Set<UInt16> = [48, 36, 76, 53, 123, 124, 125, 126, 18, 19, 20, 21, 23, 22, 26, 28, 25]
+    static let navKeys: Set<UInt16> = [48, 36, 76, 53, 49, 123, 124, 125, 126, 18, 19, 20, 21, 23, 22, 26, 28, 25]   // 49 = Space
 
     func start() -> Bool {
         let mask: CGEventMask = (1 << CGEventType.flagsChanged.rawValue) | (1 << CGEventType.keyDown.rawValue)
