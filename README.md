@@ -38,8 +38,8 @@ Install Halo, a ring launcher for macOS, from https://github.com/Rheinmir/halo.
 4. Quit Halo if it's already running (`osascript -e 'tell application id "local.halo.ring" to quit'`;
    ignore errors), then run `open ~/halo/Halo.app`.
 5. Run `open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"`
-   and ask me to turn on Halo in that list. Tell me Halo's Settings window will show a
-   green "Enabled" within a couple of seconds.
+   and ask me to turn on Halo in that list if it isn't on already (it stays on across
+   updates). Tell me Halo's Settings window shows a green "Enabled" once it's on.
 6. Finish by telling me: hold ⌥ Option on its own to open the ring, move toward an app,
    release to open it.
 

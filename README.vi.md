@@ -38,8 +38,8 @@ Cài Halo, launcher dạng vòng cho macOS, từ https://github.com/Rheinmir/hal
 4. Nếu Halo đang chạy thì thoát nó (`osascript -e 'tell application id "local.halo.ring" to quit'`;
    bỏ qua lỗi), rồi chạy `open ~/halo/Halo.app`.
 5. Chạy `open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"`
-   và nhờ tôi bật Halo trong danh sách đó. Báo tôi rằng cửa sổ Cài đặt của Halo sẽ hiện
-   "Enabled" màu xanh sau vài giây.
+   và nhờ tôi bật Halo trong danh sách đó nếu chưa bật (quyền được giữ qua các lần cập nhật).
+   Báo tôi rằng khi đã bật, cửa sổ Cài đặt của Halo hiện "Enabled" màu xanh.
 6. Kết thúc bằng cách hướng dẫn tôi: giữ ⌥ Option một mình để mở vòng, rê về phía app,
    thả tay để mở.
 
