@@ -17,6 +17,7 @@ final class SettingsStore: ObservableObject {
         f(&c)
         c.apps = Array(c.apps.prefix(Config.maxApps))
         guard c != config else { return }
+        L10n.lang = c.language   // đặt trước khi publish để lần vẽ lại dùng ngôn ngữ mới
         config = c
         c.save()
         onChange(c)
@@ -59,7 +60,7 @@ final class SettingsStore: ObservableObject {
         p.allowedContentTypes = [.application]
         p.allowsMultipleSelection = true
         p.directoryURL = URL(fileURLWithPath: "/Applications")
-        p.prompt = "Thêm vào vòng"
+        p.prompt = tr("Add to ring", "Thêm vào vòng")
         if p.runModal() == .OK { add(p.urls) }
     }
 }
@@ -67,7 +68,13 @@ final class SettingsStore: ObservableObject {
 enum SettingsTab: String, CaseIterable {
     case general = "General", apps = "Apps", about = "About"
     var symbol: String { ["general": "gearshape", "apps": "square.grid.2x2", "about": "info.circle"][rawValue.lowercased()]! }
-    var title: String { ["general": "Chung", "apps": "Ứng dụng", "about": "Giới thiệu"][rawValue.lowercased()]! }
+    var title: String {
+        switch self {
+        case .general: return tr("General", "Chung")
+        case .apps: return tr("Apps", "Ứng dụng")
+        case .about: return tr("About", "Giới thiệu")
+        }
+    }
 }
 
 struct SettingsView: View {
@@ -103,7 +110,7 @@ struct SettingsView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .frame(width: 680, height: 560)
+        .frame(width: 680, height: 640)
     }
 }
 
@@ -119,8 +126,8 @@ struct AppsTab: View {
             VStack(spacing: 12) {
                 RingEditor(store: store)
                 VStack(spacing: 3) {
-                    Text("Kéo icon trên vòng để đổi chỗ").font(.system(size: 11.5, weight: .medium))
-                    Text("Thả app từ Finder vào vòng để thêm").font(.system(size: 11)).foregroundStyle(.secondary)
+                    Text(tr("Drag icons on the ring to rearrange", "Kéo icon trên vòng để đổi chỗ")).font(.system(size: 11.5, weight: .medium))
+                    Text(tr("Drop apps from Finder onto the ring to add", "Thả app từ Finder vào vòng để thêm")).font(.system(size: 11)).foregroundStyle(.secondary)
                 }
             }
             .frame(width: 260)
@@ -131,7 +138,7 @@ struct AppsTab: View {
 
             VStack(alignment: .leading, spacing: 10) {
                 HStack(alignment: .firstTextBaseline) {
-                    Text("Vòng của bạn").font(.system(size: 13, weight: .semibold))
+                    Text(tr("Your ring", "Vòng của bạn")).font(.system(size: 13, weight: .semibold))
                     Spacer()
                     Text("\(store.config.apps.count)/\(Config.maxApps)").font(.system(size: 11.5).monospacedDigit())
                         .foregroundStyle(.secondary)
@@ -157,7 +164,7 @@ struct AppsTab: View {
                 .environment(\.defaultMinListRowHeight, 44)
                 .overlay {
                     if store.config.apps.isEmpty {
-                        Text("Chưa có app nào. Bấm “Thêm app…” hoặc kéo app từ Finder vào đây.")
+                        Text(tr("No apps yet. Click “Add App…” or drag apps here from Finder.", "Chưa có app nào. Bấm “Thêm app…” hoặc kéo app từ Finder vào đây."))
                             .font(.system(size: 12)).foregroundStyle(.secondary).multilineTextAlignment(.center).padding(30)
                     }
                 }
@@ -174,7 +181,7 @@ struct AppsTab: View {
                 }
 
                 HStack(spacing: 8) {
-                    Button { store.pickApps() } label: { Label("Thêm app…", systemImage: "plus") }
+                    Button { store.pickApps() } label: { Label(tr("Add App…", "Thêm app…"), systemImage: "plus") }
                         .disabled(store.config.apps.count >= Config.maxApps)
                     // Đọc Dock mỗi lần mở menu: app mới ghim cũng có mặt.
                     Menu {
@@ -193,12 +200,12 @@ struct AppsTab: View {
                             .disabled(inRing.contains(app.path) || full)
                         }
                         Divider()
-                        Button("Thay bằng \(Config.maxApps) app đầu Dock") {
+                        Button(tr("Replace with first \(Config.maxApps) Dock apps", "Thay bằng \(Config.maxApps) app đầu Dock")) {
                             store.update { $0.apps = Array(Config.dockApps().prefix(Config.maxApps)) }
                             store.selection = nil
                         }
                     } label: {
-                        Text("Từ Dock")
+                        Text(tr("From Dock", "Từ Dock"))
                     }
                     .fixedSize()
                     Spacer()
@@ -240,7 +247,7 @@ struct AppRow: View {
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundStyle(selected ? Color.white.opacity(0.7) : Color.secondary)
                 .opacity(hover || selected ? 1 : 0.35)
-                .help("Kéo để đổi vị trí")
+                .help(tr("Drag to reorder", "Kéo để đổi vị trí"))
             Text("\(index + 1)").font(.system(size: 11, weight: .semibold).monospacedDigit())
                 .frame(width: 18, height: 18)
                 .background(Circle().fill(selected ? Color.white.opacity(0.25) : Color.primary.opacity(0.08)))
@@ -270,7 +277,7 @@ struct AppRow: View {
     /// Vị trí trên vòng, theo giờ đồng hồ: ô 0 = 12 giờ.
     private var position: String {
         let hour = Int((Double(index) / Double(max(count, 1)) * 12).rounded()) % 12
-        return "Vị trí \(hour == 0 ? 12 : hour) giờ"
+        return tr("At \(hour == 0 ? 12 : hour) o’clock", "Vị trí \(hour == 0 ? 12 : hour) giờ")
     }
 
     private func iconButton(_ name: String, disabled: Bool = false, _ action: @escaping () -> Void) -> some View {
@@ -398,51 +405,67 @@ struct GeneralTab: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-            section("Phím kích hoạt") {
-                row("Mở vòng bằng", detail: store.config.trigger == .fn
-                    ? "Nên tắt “Press 🌐 key to” trong System Settings → Keyboard để phím không mở bảng emoji"
-                    : "Giữ một mình phím này. Phím + click hay phím + phím khác vẫn chạy bình thường") {
+            section(tr("Trigger", "Phím kích hoạt")) {
+                row(tr("Open the ring with", "Mở vòng bằng"), detail: store.config.trigger == .fn
+                    ? tr("Set “Press 🌐 key to” to “Do Nothing” in System Settings → Keyboard so it doesn’t open the emoji picker",
+                         "Nên tắt “Press 🌐 key to” trong System Settings → Keyboard để phím không mở bảng emoji")
+                    : tr("Hold this key on its own. Key + click and key + other keys still work as usual",
+                         "Giữ một mình phím này. Phím + click hay phím + phím khác vẫn chạy bình thường")) {
                     Picker("", selection: Binding(get: { store.config.trigger }, set: { v in store.update { $0.trigger = v } })) {
                         ForEach(Trigger.allCases, id: \.self) { Text($0.label).tag($0) }
                     }
                     .labelsHidden().fixedSize()
                 }
                 Divider()
-                row("Độ trễ", detail: "Giữ bao lâu thì vòng hiện. Ngắn quá dễ bật nhầm khi dùng phím tắt") {
+                row(tr("Delay", "Độ trễ"), detail: tr("How long to hold before the ring appears",
+                                                   "Giữ bao lâu thì vòng hiện")) {
                     HStack(spacing: 10) {
                         Slider(value: Binding(get: { store.config.delay }, set: { v in store.update { $0.delay = (v * 100).rounded() / 100 } }),
                                in: 0...0.5)
                             .frame(width: 160)
-                        Text(String(format: "%.2f giây", store.config.delay))
+                        Text(String(format: tr("%.2f s", "%.2f giây"), store.config.delay))
                             .font(.system(size: 11.5).monospacedDigit()).foregroundStyle(.secondary).frame(width: 62, alignment: .trailing)
                     }
                 }
             }
-            section("Vòng") {
-                row("Hiện ở", detail: nil) {
+            section(tr("Ring", "Vòng")) {
+                row(tr("Show at", "Hiện ở"), detail: nil) {
                     Picker("", selection: Binding(get: { store.config.position }, set: { v in store.update { $0.position = v } })) {
-                        Text("Giữa màn hình").tag("center")
-                        Text("Tại con trỏ").tag("cursor")
+                        Text(tr("Screen center", "Giữa màn hình")).tag("center")
+                        Text(tr("Pointer", "Tại con trỏ")).tag("cursor")
                     }
                     .pickerStyle(.segmented).frame(width: 220).labelsHidden()
                 }
                 Divider()
-                row("Danh sách cửa sổ", detail: "App có từ 2 cửa sổ: rê ra ngoài vòng để chọn cửa sổ") {
+                row(tr("Window list", "Danh sách cửa sổ"), detail: tr("For apps with 2+ windows: move past the ring’s edge to pick one",
+                                                                     "App có từ 2 cửa sổ: rê ra ngoài vòng để chọn cửa sổ")) {
                     Toggle("", isOn: Binding(get: { store.config.windows }, set: { v in store.update { $0.windows = v } }))
                         .toggleStyle(.switch).labelsHidden()
                 }
                 Divider()
-                row("Tiếng tick khi đổi app", detail: nil) {
+                row(tr("Tick sound when switching apps", "Tiếng tick khi đổi app"), detail: nil) {
                     Toggle("", isOn: Binding(get: { store.config.tick }, set: { v in store.update { $0.tick = v } }))
                         .toggleStyle(.switch).labelsHidden()
                 }
             }
-            section("Quyền") {
-                row("Accessibility", detail: store.trusted ? "Đã cấp. Halo đọc được phím kích hoạt và cửa sổ." : "Chưa cấp. Vòng sẽ không hiện.") {
+            section(tr("Language", "Ngôn ngữ")) {
+                row(tr("Interface language", "Ngôn ngữ giao diện"), detail: nil) {
+                    Picker("", selection: Binding(get: { store.config.language }, set: { v in store.update { $0.language = v } })) {
+                        Text(tr("Follow macOS", "Theo macOS")).tag(Lang.auto)
+                        Text("English").tag(Lang.en)
+                        Text("Tiếng Việt").tag(Lang.vi)
+                    }
+                    .labelsHidden().fixedSize()
+                }
+            }
+            section(tr("Permission", "Quyền")) {
+                row("Accessibility", detail: store.trusted
+                    ? tr("Granted. Halo can read the trigger key and windows.", "Đã cấp. Halo đọc được phím kích hoạt và cửa sổ.")
+                    : tr("Not granted. The ring won’t appear.", "Chưa cấp. Vòng sẽ không hiện.")) {
                     if store.trusted {
-                        Label("Đã bật", systemImage: "checkmark.circle.fill").foregroundStyle(.green).font(.system(size: 12, weight: .medium))
+                        Label(tr("Enabled", "Đã bật"), systemImage: "checkmark.circle.fill").foregroundStyle(.green).font(.system(size: 12, weight: .medium))
                     } else {
-                        Button("Mở cài đặt…") {
+                        Button(tr("Open Settings…", "Mở cài đặt…")) {
                             NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!)
                         }
                     }
@@ -482,12 +505,13 @@ struct AboutTab: View {
         VStack(spacing: 10) {
             AppIcon().frame(width: 1024, height: 1024).scaleEffect(96.0 / 1024).frame(width: 96, height: 96)
             Text("Halo").font(.system(size: 20, weight: .semibold))
-            Text("Phiên bản 0.2.0").font(.system(size: 12)).foregroundStyle(.secondary)
-            Text("Ứng dụng yêu thích của bạn, trong một cử chỉ.\nLấy cảm hứng từ FowyRing của Fowl Labs.")
+            Text(tr("Version 0.3.0", "Phiên bản 0.3.0")).font(.system(size: 12)).foregroundStyle(.secondary)
+            Text(tr("Your favorite apps, one gesture away.\nInspired by FowyRing from Fowl Labs.",
+                    "Ứng dụng yêu thích của bạn, trong một cử chỉ.\nLấy cảm hứng từ FowyRing của Fowl Labs."))
                 .font(.system(size: 12)).multilineTextAlignment(.center).foregroundStyle(.secondary).padding(.top, 4)
             HStack(spacing: 10) {
-                Button("Mở file cấu hình") { NSWorkspace.shared.activateFileViewerSelecting([Config.url]) }
-                Button("Xem FowyRing") { NSWorkspace.shared.open(URL(string: "https://fowllabs.com/apps/fowyring/")!) }
+                Button(tr("Show Config File", "Mở file cấu hình")) { NSWorkspace.shared.activateFileViewerSelecting([Config.url]) }
+                Button(tr("View FowyRing", "Xem FowyRing")) { NSWorkspace.shared.open(URL(string: "https://fowllabs.com/apps/fowyring/")!) }
             }
             .padding(.top, 8)
         }
@@ -500,7 +524,7 @@ struct AboutTab: View {
 /// Khi cửa sổ Cài đặt mở, Halo hiện trong Dock và ⌘Tab để dễ tìm; đóng thì về lại chỉ menu bar.
 final class SettingsWindow: NSWindow, NSWindowDelegate {
     init(store: SettingsStore) {
-        super.init(contentRect: NSRect(x: 0, y: 0, width: 680, height: 560),
+        super.init(contentRect: NSRect(x: 0, y: 0, width: 680, height: 640),
                    styleMask: [.titled, .closable, .miniaturizable], backing: .buffered, defer: false)
         title = "Halo"
         isReleasedWhenClosed = false

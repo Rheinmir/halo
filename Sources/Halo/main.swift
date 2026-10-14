@@ -46,13 +46,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func buildMenu(trusted: Bool) {
         let m = NSMenu()
         if !trusted {
-            m.addItem(withTitle: "Cấp quyền Accessibility…", action: #selector(openAX), keyEquivalent: "").target = self
+            m.addItem(withTitle: tr("Grant Accessibility access…", "Cấp quyền Accessibility…"), action: #selector(openAX), keyEquivalent: "").target = self
             m.addItem(.separator())
         }
-        m.addItem(withTitle: "Giữ \(config.trigger.symbol) để mở vòng · \(config.apps.count) app", action: nil, keyEquivalent: "")
-        m.addItem(withTitle: "Cài đặt…", action: #selector(openSettings), keyEquivalent: ",").target = self
+        m.addItem(withTitle: tr("Hold \(config.trigger.symbol) to open the ring · \(config.apps.count) apps", "Giữ \(config.trigger.symbol) để mở vòng · \(config.apps.count) app"), action: nil, keyEquivalent: "")
+        m.addItem(withTitle: tr("Settings…", "Cài đặt…"), action: #selector(openSettings), keyEquivalent: ",").target = self
         m.addItem(.separator())
-        m.addItem(withTitle: "Thoát Halo", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        m.addItem(withTitle: tr("Quit Halo", "Thoát Halo"), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         status.menu = m
     }
 
@@ -65,6 +65,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func apply() {
+        L10n.lang = config.language
+        model.lang = config.language
         model.apps = config.apps
         model.icons = config.apps.map { NSWorkspace.shared.icon(forFile: $0.path) }
         model.triggerSymbol = config.trigger.symbol
@@ -222,6 +224,9 @@ func arg(_ flag: String) -> [String]? {
     return Array(args[(i + 1)...])
 }
 
+// --lang en|vi: ngôn ngữ cho ảnh xuất ra (mặc định theo config)
+if let a = arg("--lang"), let l = a.first.flatMap(Lang.init(rawValue:)) { L10n.lang = l } else { L10n.lang = Config.load().language }
+
 if args.contains("--selftest") {
     Geometry.selftest()
     exit(0)
@@ -259,11 +264,13 @@ if let a = arg("--preview"), let out = a.first {
 if let a = arg("--preview-settings"), let out = a.first {
     MainActor.assumeIsolated {
         _ = NSApplication.shared
-        let store = SettingsStore(config: Config.load())
+        var c = Config.load()
+        if let a = arg("--lang"), let l = a.first.flatMap(Lang.init(rawValue:)) { c.language = l }   // chỉ trong ảnh, không ghi file
+        let store = SettingsStore(config: c)
         store.selection = 1
         let tab = SettingsTab.allCases.first { $0.rawValue.lowercased() == (a.count > 1 ? a[1] : "apps") } ?? .apps
         snapshot(SettingsView(store: store, tab: tab).background(Color(nsColor: .windowBackgroundColor)),
-                 size: CGSize(width: 680, height: 560), to: out, dark: !a.contains("light"))
+                 size: CGSize(width: 680, height: 640), to: out, dark: !a.contains("light"))
     }
     exit(0)
 }

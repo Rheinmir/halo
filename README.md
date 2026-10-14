@@ -9,7 +9,7 @@ A ring launcher for macOS that puts your favorite apps — and the exact window 
 
 <p align="center"><a href="#quick-start">Quick start</a> · <a href="#what-you-can-do">What you can do</a> · <a href="#limitations-and-requirements">Limitations</a> · <a href="#troubleshooting">Troubleshooting</a></p>
 
-> **Note:** Halo's interface is currently in Vietnamese. The screenshots below show the real UI; this README explains each part in English.
+<p align="center"><b>English</b> · <a href="README.vi.md">Tiếng Việt</a></p>
 
 ## Why Halo?
 
@@ -39,10 +39,10 @@ open Halo.app
 
 Halo needs this to notice when you hold the trigger key and to read and raise app windows.
 
-- In Settings, open the first tab (**Chung**, "General"). Under the last section (**Quyền**, "Permission"), click **Mở cài đặt…** ("Open settings…").
+- In Settings, open the **General** tab. Under **Permission**, click **Open Settings…**.
 - In System Settings → Privacy & Security → Accessibility, turn on **Halo**.
 
-✅ Within about two seconds, the permission row in Halo's Settings shows a green **Đã bật** ("Enabled"). You don't need to restart the app.
+✅ Within about two seconds, the permission row in Halo's Settings shows a green **Enabled**. You don't need to restart the app.
 
 **3. Try it**
 
@@ -70,45 +70,46 @@ Hold the trigger key, flick toward a slot, release. Apps keep their slots, so af
 
 ### Jump to the exact window
 
-When the app you point at has two or more windows, the center reads "*N* cửa sổ ›" ("*N* windows") and a window list opens beside the ring.
+When the app you point at has two or more windows, the center reads "*N* windows ›" and a window list opens beside the ring.
 
 <p align="center"><img src="docs/ring-windows.png" width="680" alt="A window list next to the ring"></p>
 
 - Move the pointer out past the edge of the ring, toward the list. The nearest row is selected.
-- Release the key: that window comes to the front. Minimized windows (marked "thu nhỏ") are restored.
+- Release the key: that window comes to the front. Minimized windows (marked "minimized") are restored.
 - From the keyboard: **↓** enters the list, **↑ / ↓** move through it.
 
 ### Arrange the ring by dragging
 
-Open Settings from the menu bar icon (**Cài đặt…**, ⌘,) and go to the middle tab (**Ứng dụng**, "Apps").
+Open Settings from the menu bar icon (**Settings…**, ⌘,) and go to the **Apps** tab.
 
 <p align="center"><img src="docs/settings-apps.png" width="560" alt="The Apps tab: an editable ring on the left, the app list on the right"></p>
 
 - **Drag an icon on the ring** to another slot. The other icons move aside, and the real ring updates as soon as you drop.
 - **Drop an app from Finder** onto a slot on the ring, or between two rows of the list, to insert it right there.
-- **Từ Dock ▾** ("From Dock") lists every app pinned in your Dock. Apps already on the ring are checked.
-- **Thêm app…** ("Add app…") opens a file picker. The **−** button on a row removes that app.
+- **From Dock ▾** lists every app pinned in your Dock. Apps already on the ring are checked.
+- **Add App…** opens a file picker. The **−** button on a row removes that app.
 - The ring holds up to 10 apps. The counter above the list shows how many slots are used (for example "7/10").
 
 ### Make it fit your hands
 
-The first tab (**Chung**, "General") has the rest of the options.
+The **General** tab has the rest of the options.
 
 <p align="center"><img src="docs/settings-general.png" width="560" alt="The General tab"></p>
 
 | Setting | What it does |
 |---|---|
-| Mở vòng bằng — *Trigger key* | Hold ⌥ Option, ⌃ Control, ⌘ Command or 🌐 Globe (fn) to open the ring |
-| Độ trễ — *Delay* | How long to hold before the ring appears, from 0 to 0.5 s (default 0.18 s). A short delay can trigger by accident when you use shortcuts |
-| Hiện ở — *Show at* | Center of the screen under the pointer, or right at the pointer |
-| Danh sách cửa sổ — *Window list* | Turn the window list on or off |
-| Tiếng tick — *Tick sound* | A soft tick each time the highlight moves to another app |
+| Open the ring with | Hold ⌥ Option, ⌃ Control, ⌘ Command or 🌐 Globe (fn) to open the ring |
+| Delay | How long to hold before the ring appears, from 0 to 0.5 s (default 0.18 s). A short delay can trigger by accident when you use shortcuts |
+| Show at | Center of the screen under the pointer, or right at the pointer |
+| Window list | Turn the window list on or off |
+| Tick sound | A soft tick each time the highlight moves to another app |
+| Interface language | English (default), Tiếng Việt, or follow macOS |
 
 All changes apply immediately.
 
 ## How it works
 
-- **Everything stays on your Mac.** Halo makes no network requests. The only web link is the "Xem FowyRing" button in the About tab, which opens your browser when you click it.
+- **Everything stays on your Mac.** Halo makes no network requests. The only web link is the "View FowyRing" button in the About tab, which opens your browser when you click it.
 - **Key detection:** a system event tap watches modifier keys. It only acts when the trigger key is held alone, and it swallows navigation keys (Tab, arrows, digits, Enter, Esc) only while the ring is open.
 - **Windows:** the window list comes from the macOS Accessibility API, which is the same permission used for the key. Halo doesn't need Screen Recording.
 - **Settings** are saved to `~/Library/Application Support/Halo/config.json`. You can edit the file by hand. Missing keys fall back to defaults.
@@ -118,7 +119,7 @@ All changes apply immediately.
 - **macOS 13 Ventura or later.** Developed on macOS 15 (Apple Silicon). macOS 13 and 14 haven't been tried yet.
 - **Accessibility permission is required.** Without it the ring never appears.
 - **Build from source only.** No signed or notarized release exists yet. The app is signed with a self-signed certificate created on your own machine, so a copy of `Halo.app` won't open on another Mac. Each person builds their own.
-- **Interface language:** Vietnamese only for now.
+- **Interface languages:** English and Vietnamese.
 - **Up to 10 apps** on the ring.
 - **The window list only shows windows on the current Space** (desktop).
 - **No "launch at login" option yet.** Add Halo to System Settings → General → Login Items if you want it to start automatically.
@@ -126,7 +127,7 @@ All changes apply immediately.
 ## Troubleshooting
 
 **Holding ⌥ does nothing.**
-Accessibility is probably off. In Halo's Settings, open **Chung** ("General"). If the permission row doesn't show a green **Đã bật**, click **Mở cài đặt…** and turn Halo on. Also make sure you're holding the trigger key alone, and for at least the delay time.
+Accessibility is probably off. In Halo's Settings, open **General**. If the permission row doesn't show a green **Enabled**, click **Open Settings…** and turn Halo on. Also make sure you're holding the trigger key alone, and for at least the delay time.
 
 **Accessibility keeps turning off after I rebuild.**
 macOS ties the permission to the app's signature. `build.sh` signs every build with the same "Halo Local Signing" certificate so the permission sticks. If you deleted that certificate, the next build creates a new one and you need to turn Accessibility on once more.
@@ -148,9 +149,10 @@ swift build -c release
 .build/release/Halo --preview out.png 2            # render the ring with slot 2 highlighted
 .build/release/Halo --preview out.png 1 0 "A" "~B" # …plus a fake window list ("~" = minimized)
 .build/release/Halo --preview-settings out.png apps|general|about [light]
+# add --lang en|vi to any preview to pick the interface language
 ```
 
-The screenshots in `docs/` were made with these commands. They use the apps from your own config file, and a solid background instead of the live translucent glass.
+The screenshots in `docs/` (English) and `docs/vi/` (Vietnamese) were made with these commands. They use the apps from your own config file, and a solid background instead of the live translucent glass.
 
 | File | Responsibility |
 |---|---|
@@ -160,6 +162,7 @@ The screenshots in `docs/` were made with these commands. They use the apps from
 | `Sources/Halo/Windows.swift` | Listing and raising windows via Accessibility |
 | `Sources/Halo/Settings.swift` | The Settings window and the drag-to-arrange ring |
 | `Sources/Halo/Apps.swift` | Config file, Dock reading, trigger keys |
+| `Sources/Halo/L10n.swift` | English/Vietnamese strings (`tr("English", "Tiếng Việt")`) |
 | `Sources/Halo/main.swift` | App wiring and the command-line tools above |
 | `build.sh` | Builds `Halo.app`, generates the icon, signs it |
 
@@ -171,4 +174,4 @@ To remove the signing certificate later, open Keychain Access and delete "Halo L
 
 Halo's interaction is inspired by [FowyRing](https://fowllabs.com/apps/fowyring/) from Fowl Labs. Halo is an independent project written from scratch.
 
-No license has been chosen yet. Until one is added, the default copyright applies.
+Released under the [MIT License](LICENSE).

@@ -11,7 +11,8 @@ final class RingModel: ObservableObject {
     @Published var visible = false                // điều khiển hiệu ứng hiện
     var ghost: Int?
     @Published var triggerSymbol = "⌥"
-    @Published var previousName: String?          // app dùng trước đó: gợi ý "Space ↩ …" ở tâm vòng                               // Settings: ô đang được kéo tới -> vẽ mờ làm chỗ trống
+    @Published var previousName: String?
+    @Published var lang: Lang = .en             // đổi ngôn ngữ -> vẽ lại vòng          // app dùng trước đó: gợi ý "Space ↩ …" ở tâm vòng                               // Settings: ô đang được kéo tới -> vẽ mờ làm chỗ trống
     var solidBackground = false                   // ảnh preview: NSVisualEffectView không vẽ được offscreen
 
     var showsWindowList: Bool { hovered != nil && windows.count >= 2 }
@@ -115,7 +116,7 @@ struct CenterLabel: View {
                     .foregroundStyle(.secondary)
             } else {
                 Text(model.triggerSymbol).font(.system(size: 17, weight: .medium)).foregroundStyle(.secondary)
-                Text("Rê tới một app").font(.system(size: 10.5, weight: .medium)).foregroundStyle(.tertiary)
+                Text(tr("Point at an app", "Rê tới một app")).font(.system(size: 10.5, weight: .medium)).foregroundStyle(.tertiary)
                 if let prev = model.previousName {
                     Text("Space ↩ \(prev)").font(.system(size: 10, weight: .medium)).foregroundStyle(.tertiary)
                         .lineLimit(1).truncationMode(.tail).padding(.top, 2)
@@ -128,9 +129,9 @@ struct CenterLabel: View {
     }
 
     private func subtitle(_ h: Int) -> String {
-        let key = h < 9 ? " · phím \(h + 1)" : ""
-        if model.windows.count >= 2 { return "\(model.windows.count) cửa sổ ›" }
-        return (model.running.contains(model.apps[h].path) ? "Đang chạy" : "Mở") + key
+        let key = h < 9 ? tr(" · key \(h + 1)", " · phím \(h + 1)") : ""
+        if model.windows.count >= 2 { return tr("\(model.windows.count) windows ›", "\(model.windows.count) cửa sổ ›") }
+        return (model.running.contains(model.apps[h].path) ? tr("Running", "Đang chạy") : tr("Open", "Mở")) + key
     }
 }
 
@@ -161,7 +162,7 @@ struct WindowList: View {
                     Image(nsImage: model.icons[slot]).resizable().frame(width: 16, height: 16)
                 }
                 Text(model.apps[slot].name).font(.system(size: 11.5, weight: .semibold))
-                Text("\(rows) cửa sổ").font(.system(size: 11)).foregroundStyle(.secondary)
+                Text(tr("\(rows) windows", "\(rows) cửa sổ")).font(.system(size: 11)).foregroundStyle(.secondary)
             }
             .padding(.horizontal, 6)
             .offset(y: -26)
@@ -188,7 +189,7 @@ struct WindowRow: View {
                 .lineLimit(1).truncationMode(.middle)
             Spacer(minLength: 4)
             if window.minimized {
-                Text("thu nhỏ").font(.system(size: 10)).foregroundStyle(selected ? Color.white.opacity(0.8) : Color.secondary)
+                Text(tr("minimized", "thu nhỏ")).font(.system(size: 10)).foregroundStyle(selected ? Color.white.opacity(0.8) : Color.secondary)
             }
         }
         .padding(.horizontal, 9)

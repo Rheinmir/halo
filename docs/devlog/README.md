@@ -8,6 +8,7 @@ Notes on problems we hit and features we built, one topic per post. Each post sa
 - [Choosing the exact window from the ring](build-window-picker.md): Accessibility windows, "leave the ring to enter the list"
 - [Arranging apps directly on the ring](build-arrange-on-ring.md): drag icons between slots, drop apps from Finder
 - [Settings that looked adjustable but weren't](build-trigger-key-and-delay.md): choosable trigger key and delay
+- [English and Vietnamese interface](build-bilingual-interface.md): `tr()` strings, English by default, screenshots in both languages
 - [One signal for "this slot is selected"](design-single-selection-signal.md): five versions of the highlight, and why fewer layers won
 
 ## Problems fixed

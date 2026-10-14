@@ -30,6 +30,7 @@ struct Config: Codable, Equatable {
     var windows: Bool = true          // bung danh sách cửa sổ khi app có từ 2 cửa sổ
     var trigger: Trigger = .option    // phím giữ để mở vòng
     var delay: Double = 0.18          // giữ bao lâu thì vòng hiện (giây)
+    var language: Lang = .en          // ngôn ngữ giao diện, mặc định tiếng Anh
 
     init(apps: [RingApp]) { self.apps = apps }
 
@@ -42,6 +43,7 @@ struct Config: Codable, Equatable {
         windows = try c.decodeIfPresent(Bool.self, forKey: .windows) ?? true
         trigger = (try? c.decodeIfPresent(Trigger.self, forKey: .trigger)) ?? .option
         delay = min(max(try c.decodeIfPresent(Double.self, forKey: .delay) ?? 0.18, 0), 0.5)
+        language = (try? c.decodeIfPresent(Lang.self, forKey: .language)) ?? .en
     }
 
     static let url: URL = {

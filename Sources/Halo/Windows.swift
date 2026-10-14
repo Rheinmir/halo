@@ -21,7 +21,7 @@ enum Windows {
             return AppWindow(title: attr(w, kAXTitleAttribute) ?? "", element: w,
                              minimized: attr(w, kAXMinimizedAttribute) ?? false)
         }
-        .enumerated().map { i, w in w.title.isEmpty ? AppWindow(title: "Cửa sổ \(i + 1)", element: w.element, minimized: w.minimized) : w }
+        .enumerated().map { i, w in w.title.isEmpty ? AppWindow(title: tr("Window \(i + 1)", "Cửa sổ \(i + 1)"), element: w.element, minimized: w.minimized) : w }
         .prefix(Geometry.maxRows).map { $0 }
     }
 
