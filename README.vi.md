@@ -35,7 +35,8 @@ Cài Halo, launcher dạng vòng cho macOS, từ https://github.com/Rheinmir/hal
 3. Trong ~/halo, chạy `./build.sh`. Thành công thì cuối log có "selftest OK" và
    "OK: …/Halo.app". Nếu macOS hỏi codesign có được dùng khoá "Halo Local Signing",
    nhờ tôi bấm "Always Allow". Nếu build lỗi, cho tôi xem lỗi, đừng sửa code.
-4. Chạy `open ~/halo/Halo.app`.
+4. Nếu Halo đang chạy thì thoát nó (`osascript -e 'tell application id "local.halo.ring" to quit'`;
+   bỏ qua lỗi), rồi chạy `open ~/halo/Halo.app`.
 5. Chạy `open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"`
    và nhờ tôi bật Halo trong danh sách đó. Báo tôi rằng cửa sổ Cài đặt của Halo sẽ hiện
    "Enabled" màu xanh sau vài giây.

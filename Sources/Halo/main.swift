@@ -275,6 +275,14 @@ if let a = arg("--preview-settings"), let out = a.first {
     exit(0)
 }
 
+// Chỉ một bản chạy: hai bản cùng bắt phím sẽ cùng mở vòng (gặp khi cài bản thứ hai cạnh bản dev).
+// Bản mở sau tự thoát; muốn chạy bản mới thì thoát bản cũ trước (prompt cài đặt làm việc này).
+let me = ProcessInfo.processInfo.processIdentifier
+if let id = Bundle.main.bundleIdentifier,
+   NSRunningApplication.runningApplications(withBundleIdentifier: id).contains(where: { $0.processIdentifier != me }) {
+    exit(0)
+}
+
 let app = NSApplication.shared
 let delegate = AppDelegate()
 app.delegate = delegate

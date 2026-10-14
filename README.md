@@ -35,7 +35,8 @@ Install Halo, a ring launcher for macOS, from https://github.com/Rheinmir/halo.
 3. In ~/halo, run `./build.sh`. Success ends with "selftest OK" and "OK: …/Halo.app".
    If macOS asks whether codesign may use the "Halo Local Signing" key, ask me to click
    "Always Allow". If the build fails, show me the error; don't change the code.
-4. Run `open ~/halo/Halo.app`.
+4. Quit Halo if it's already running (`osascript -e 'tell application id "local.halo.ring" to quit'`;
+   ignore errors), then run `open ~/halo/Halo.app`.
 5. Run `open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"`
    and ask me to turn on Halo in that list. Tell me Halo's Settings window will show a
    green "Enabled" within a couple of seconds.
