@@ -21,7 +21,7 @@ Notes on problems we hit and features we built, one topic per post. Each post sa
 - [Adding a setting would have wiped the user's ring](fix-config-migration-wipe.md) ([#12](https://github.com/Rheinmir/halo/issues/12)): synthesized `Decodable` ignores defaults
 - [The self-test that could never fail](fix-selftest-assert-stripped.md) ([#2](https://github.com/Rheinmir/halo/issues/2)): `assert` disappears in release builds
 - [What a real-mouse test found in the window list](fix-window-list-live-test.md) ([#26](https://github.com/Rheinmir/halo/issues/26)): the path to the list crossed another app, raise order, unreadable header
-- [Running the install prompt with a real agent](verify-agent-install-prompt.md): two runs (install, update from remote), and the two-instances bug they found
+- [Running the install prompt with a real agent](verify-agent-install-prompt.md) ([#27](https://github.com/Rheinmir/halo/issues/27)): two runs (install, update from remote), and the two-instances bug they found
 - [Space did nothing](fix-app-activation-macos14.md) ([#13](https://github.com/Rheinmir/halo/issues/13)): background apps can't activate others on macOS 14+, so Halo uses Accessibility instead
 
 ## Still unverified
